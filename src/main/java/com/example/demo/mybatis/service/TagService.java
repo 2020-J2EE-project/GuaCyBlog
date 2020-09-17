@@ -9,4 +9,6 @@ import java.util.List;
  */
 public interface TagService {
     List<Tag>findAllTags();
+    boolean findTag(String tagName);
+    void addTag(Tag tag);
 }

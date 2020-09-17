@@ -27,14 +27,9 @@ public class TagController {
 
         ModelAndView mv = new ModelAndView();
         List<Tag> tags = tagService.findAllTags();
-        Tag tag1=new Tag();
-        tag1.setTag_id(4);
-        tag1.setTag_name("tag4");
-        List<Tag> tags1=new ArrayList<>();
-        tags1.add(tag1);
         System.out.println(tags.get(0));
         System.out.println(tags.size());
-        mv.addObject("tags", tags1);
+        mv.addObject("tags", tags);
         mv.setViewName("tags");
         return mv;
     }

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="content-type" content="text/html;charset=UTF-8">
     <title>Login | Guacy Blog</title>
@@ -13,6 +13,7 @@
         <h1>
             Guacy Blog
         </h1>
+        <td th:text="${message}"></td>
         <label for="input" class="sr-only">用户名</label>
         <input type="text" id="input" class="form-control" placeholder="用户名" name="username" required>
         <label for="inputPassword" class="sr-only">密码</label>

@@ -1,5 +1,6 @@
 package com.example.demo.mybatis.service;
 import com.example.demo.mybatis.entity.Article;
+import com.example.demo.mybatis.entity.Comment;
 import java.util.List;
 
 /**
@@ -8,8 +9,11 @@ import java.util.List;
 public interface ArticleService {
 
 
-    List<Article> getText();
+    List<Comment> findCommentsByArticleId(int articleId);
 
+    void addComment(Comment comment);
 
     void addText(Article article);
+
+    Article findText(int articleId);
 }

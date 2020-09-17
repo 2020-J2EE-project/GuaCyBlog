@@ -20,4 +20,17 @@ public class TagServiceImpl implements TagService{
     public List<Tag> findAllTags(){
         return tagMapper.findAllTags();
     }
+
+    @Override
+    public boolean findTag(String tagName){
+        if(tagMapper.findTag(tagName)==null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public void addTag(Tag tag){
+        tagMapper.addTag(tag);
+    }
 }

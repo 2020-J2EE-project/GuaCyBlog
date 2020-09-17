@@ -3,17 +3,16 @@ package com.example.demo.mybatis.controller;
 import com.example.demo.mybatis.entity.User;
 import com.example.demo.mybatis.service.UserService;
 
+import com.sun.xml.internal.ws.resources.XmlmessageMessages;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.jws.WebParam;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,7 +28,7 @@ public class UserController {
     }
 
     //@GetMapping("/users")
-    @RequestMapping("/users")
+    @RequestMapping("/users")         //列出所有的user
     public ModelAndView users() {
 
         List<User> users = userService.findAll();
@@ -39,34 +38,68 @@ public class UserController {
         return mv;
     }
 
-    @RequestMapping("/findAll")
-    public List<User> findAll(){
-        return userService.findAll();
-    }
-
-    @RequestMapping("/login")
-    public ModelAndView findByUsername(HttpServletRequest request, HttpSession session){
+    @CrossOrigin
+    @RequestMapping("/login")    //登录
+   /* public ModelAndView login(HttpServletRequest request, HttpSession session){
         ModelAndView mv=new ModelAndView();
         String username=request.getParameter("username");
         String password=request.getParameter("password");
         System.out.println(username+" "+password);
         User user = userService.findByUsername(username);
         if(user==null){
-            mv.addObject("message","用户名不存在");
+            mv.addObject("message","no such user");
             mv.setViewName("login");
             return mv;
         }else if(!user.getPassword().equals(password)){
-            mv.addObject("message","密码错误");
+            mv.addObject("message","wrong pass");
             mv.setViewName("login");
             return mv;
         }else{
             mv.addObject("user",user);
-            mv.setViewName("showarticle");
+            session.setAttribute("user",user);
+            mv.setViewName("editArticle");
             return mv;
         }
 
+    }*/
+    public String login(@RequestBody User user){
+
+        String message;
+        String username=user.getUsername();
+        String password=user.getPassword();
+        System.out.println(username+" "+password);
+        User user1 = userService.findByUsername(username);
+        if(user1==null){
+            message="no such user";
+        }else if(!user1.getPassword().equals(password)){
+            message="wrong pass";
+        }else{
+            message="success";
+        }
+        return message;
     }
 
+    @RequestMapping("/follower")
+    public ModelAndView follower(HttpServletRequest request, HttpSession session){
+        ModelAndView mv=new ModelAndView();
+        String username=request.getParameter("username");
+        User user = userService.findByUsername(username);
+        List<User> followers=userService.findFollowers(user.getId());
+        mv.addObject("followers",followers);
+        mv.setViewName("users");
+        return mv;
+    }
+
+    @RequestMapping("/following")
+    public ModelAndView following(HttpServletRequest request, HttpSession session){
+        ModelAndView mv=new ModelAndView();
+        String username=request.getParameter("username");
+        User user = userService.findByUsername(username);
+        List<User> followings=userService.findFollowers(user.getId());
+        mv.addObject("followings",followings);
+        mv.setViewName("users");
+        return mv;
+    }
 }
 
 

@@ -16,10 +16,8 @@ public interface ArticleMapper {
      */
     List<Article> getText();
 
-    /**
-     * 添加文本内容
-     * @param content
-     * @return
-     */
-    void addText(Article content);
+
+    void addText(Article article);
+
+    Article findText(int articleId);
 }

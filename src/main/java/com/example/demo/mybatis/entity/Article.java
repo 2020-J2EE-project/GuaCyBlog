@@ -5,24 +5,59 @@ import java.util.Date;
  */
 public class Article {
 
-    private int id;
-    private String content;
+    private int articleId;
 
-    public String getContent() {
-        return content;
+    public String getArticleText() {
+        return articleText;
     }
 
-    public void setContent(String content) {
-        this.content = content;
+    public void setArticleText(String articleText) {
+        this.articleText = articleText;
     }
 
-    public int getId() {
-        return id;
+    private String articleText;
+
+    public String getTag() {
+        return tag;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setTag(String tag) {
+        this.tag = tag;
     }
+
+    private String tag;
+
+    public int getArticleId() {
+        return articleId;
+    }
+
+    public void setArticleId(int articleId) {
+        this.articleId = articleId;
+    }
+
+
+    public String getArticleTitle() {
+        return articleTitle;
+    }
+
+    public void setArticleTitle(String articleTitle) {
+        this.articleTitle = articleTitle;
+    }
+
+    public int getUserId() {
+        return userId;
+    }
+
+    public void setUserId(int userId) {
+        this.userId = userId;
+    }
+
+    private String articleTitle;
+    private int userId;
+
+
+
+
 
  /*   private int article_id;
     private int user_id;

@@ -7,4 +7,7 @@ import java.util.List;
 public interface UserService {
     List<User> findAll();
     User findByUsername(String username);
+    int findIDByName(String username);
+    List<User> findFollowers(int id);
+    List<User> findFollowings(int id);
 }

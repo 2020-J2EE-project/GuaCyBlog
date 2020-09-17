@@ -8,6 +8,19 @@
     <select id="findByUsername" parameterType="String" resultType="User">
         SELECT * FROM b_user WHERE username = #{username}
     </select>
+
+    <select id="findById" parameterType="int" resultType="User">
+        SELECT * FROM b_user WHERE id = #{id}
+    </select>
+
+    <select id="findFollowers" parameterType="int" resultType="int">
+        SELECT followerId FROM b_follow WHERE followingId = #{followingId}
+    </select>
+
+    <select id="findFollowings" parameterType="int" resultType="int">
+        SELECT followingId FROM b_follow WHERE followerId = #{followerId}
+    </select>
+
 </mapper>
 
 
