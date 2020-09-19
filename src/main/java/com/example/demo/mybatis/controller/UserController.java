@@ -2,8 +2,6 @@ package com.example.demo.mybatis.controller;
 
 import com.example.demo.mybatis.entity.User;
 import com.example.demo.mybatis.service.UserService;
-
-import com.sun.xml.internal.ws.resources.XmlmessageMessages;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,14 +18,9 @@ import java.util.List;
 //RequestMapping用来映射请求,指定控制器可以处理的URL请求
 public class UserController {
 
+    @Autowired
     private UserService userService;
 
-    @Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }
-
-    //@GetMapping("/users")
     @RequestMapping("/users")         //列出所有的user
     public ModelAndView users() {
 
@@ -40,35 +33,13 @@ public class UserController {
 
     @CrossOrigin
     @RequestMapping("/login")    //登录
-   /* public ModelAndView login(HttpServletRequest request, HttpSession session){
-        ModelAndView mv=new ModelAndView();
-        String username=request.getParameter("username");
-        String password=request.getParameter("password");
-        System.out.println(username+" "+password);
-        User user = userService.findByUsername(username);
-        if(user==null){
-            mv.addObject("message","no such user");
-            mv.setViewName("login");
-            return mv;
-        }else if(!user.getPassword().equals(password)){
-            mv.addObject("message","wrong pass");
-            mv.setViewName("login");
-            return mv;
-        }else{
-            mv.addObject("user",user);
-            session.setAttribute("user",user);
-            mv.setViewName("editArticle");
-            return mv;
-        }
-
-    }*/
     public String login(@RequestBody User user){
-
         String message;
         String username=user.getUsername();
         String password=user.getPassword();
-        System.out.println(username+" "+password);
+        System.out.println("User:"+user);
         User user1 = userService.findByUsername(username);
+        System.out.println("User1:"+user1);
         if(user1==null){
             message="no such user";
         }else if(!user1.getPassword().equals(password)){
@@ -77,6 +48,18 @@ public class UserController {
             message="success";
         }
         return message;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/register")
+    public String register(@RequestBody User user){
+        String msg="您的用户名已被使用，请更换用户名";
+        User haveuser=userService.findByUsername(user.getUsername());
+        if(haveuser==null){
+            userService.addUser(user);
+            msg="success!";
+        }
+        return msg;
     }
 
     @RequestMapping("/follower")

@@ -16,4 +16,6 @@ public interface ArticleService {
     void addText(Article article);
 
     Article findText(int articleId);
+
+    List<Article> findAllArticle();
 }

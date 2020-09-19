@@ -47,4 +47,9 @@ public class ArticleSeviceImpl implements ArticleService{
     public List<Comment> findCommentsByArticleId(int articleId){
         return commentMapper.findCommentsByArticleId(articleId);
     }
+
+    @Override
+    public List<Article> findAllArticle() {
+        return articleMapper.findAllArticle();
+    }
 }

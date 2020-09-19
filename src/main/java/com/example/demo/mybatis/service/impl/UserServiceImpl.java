@@ -3,7 +3,6 @@ package com.example.demo.mybatis.service.impl;
 import com.example.demo.mybatis.entity.User;
 import com.example.demo.mybatis.mapper.UserMapper;
 import com.example.demo.mybatis.service.UserService;
-import org.omg.CORBA.PUBLIC_MEMBER;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -44,6 +43,11 @@ public class UserServiceImpl implements UserService {
             followers.add(user);
         }
         return followers;
+    }
+
+    @Override
+    public void addUser(User user){
+        userMapper.addUser(user);
     }
 
     @Override

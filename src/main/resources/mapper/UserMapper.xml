@@ -21,6 +21,10 @@
         SELECT followingId FROM b_follow WHERE followerId = #{followerId}
     </select>
 
+    <insert id="addUser" parameterType="User">
+        INSERT INTO b_user VALUES(NULL,#{username},#{password})
+    </insert>
+
 </mapper>
 
 

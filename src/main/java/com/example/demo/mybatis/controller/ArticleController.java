@@ -1,17 +1,19 @@
 package com.example.demo.mybatis.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.example.demo.mybatis.entity.Article;
-import com.example.demo.mybatis.entity.Tag;
 import com.example.demo.mybatis.service.ArticleService;
 import com.example.demo.mybatis.service.TagService;
 import com.example.demo.mybatis.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by 20372 on 2020/9/13.
@@ -37,7 +39,6 @@ public class ArticleController {
 
    @RequestMapping("/markdown")
     public ModelAndView article() {
-
         ModelAndView mv = new ModelAndView();
         mv.setViewName("showArticle");
         return mv;
@@ -53,32 +54,28 @@ public class ArticleController {
         return mv;
     }
 
+    @CrossOrigin
     @RequestMapping("/addText")
-    public ModelAndView article(HttpServletRequest request, HttpSession session) {
-
-        String content = request.getParameter("content");
-        String username=request.getParameter("author");
-        String tagName=request.getParameter("tag");
-        String articleTitle = request.getParameter("title");
-        int userId =userService.findIDByName(username);
-
-        Article article = new Article();
-        article.setUserId(userId);
-        article.setArticleText(content);
-        article.setArticleTitle(articleTitle);
-        article.setTag(tagName);
+    public String addText(@RequestBody Article article){
+        int userId=article.getUserId();
+        String title=article.getArticleTitle();
+        String text=article.getArticleText();
+        System.out.println(userId+"  "+title+"  "+text);
         articleService.addText(article);
-
-        if(!tagService.findTag(tagName)){
-            Tag tag = new Tag();
-            tag.setTagName(tagName);
-            tagService.addTag(tag);
-        }
-
-        ModelAndView mv = new ModelAndView();
-        mv.setViewName("editArticle");
-        return mv;
+        return "successful add!";
     }
 
+    @CrossOrigin
+    @RequestMapping("/findAllArticle")
+    public String findAllArticle() {
+        List<Article> articleList = articleService.findAllArticle();
+        int numbers = articleList.size();
+        HashMap<String,Object> res = new HashMap<>();
+        res.put("numbers",numbers);
+        res.put("data",articleList);
+        System.out.println("numbers:"+numbers);
+        String users_json = JSON.toJSONString(res);
+        return users_json;
+    }
 
 }

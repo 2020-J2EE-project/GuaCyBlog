@@ -12,5 +12,6 @@ public interface UserMapper {
     User findById(int id);
     int[] findFollowers(int id);
     int[] findFollowings(int id);
+    void addUser(User user);
 
 }

@@ -10,4 +10,5 @@ public interface UserService {
     int findIDByName(String username);
     List<User> findFollowers(int id);
     List<User> findFollowings(int id);
+    void addUser(User user);
 }
