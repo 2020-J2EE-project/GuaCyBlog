@@ -10,7 +10,6 @@ import Article from '../components/Article.vue'
 import Mail from '../components/admin/Mail.vue'
 import Page from '../components/Page.vue'
 import Friend from '../components/admin/Friend.vue'
-import Friend2 from '../components/admin/Friend2.vue'
 import Editor from '../components/Editor.vue'
 import Register from '../components/register.vue'
 import 'mavon-editor/dist/css/index.css'
@@ -43,7 +42,6 @@ const routes = [
       { path:'/welcome', component: Welcome},
       { path:'/mail',component: Mail},
       { path:'/friend', component: Friend},
-      { path:'/friend2', component: Friend2},
       { path:'/user', component: User},
       { path:'/github'},
       { path:'/editor',component: Editor},

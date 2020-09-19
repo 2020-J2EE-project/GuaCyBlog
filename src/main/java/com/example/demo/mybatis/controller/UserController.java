@@ -48,6 +48,7 @@ public class UserController {
             message="wrong pass";
         }else{
             data.put("userid",user1.getId());
+            System.out.println(user1.getId());
             data.put("username",user1.getUsername());
             message="success";
         }
@@ -92,10 +93,11 @@ public class UserController {
 
     @CrossOrigin
     @RequestMapping("/findById")
-    public String findById(int id) {
-        User user = userService.findById(id);
+    public String findById(@RequestBody User user) {
+        User userr = userService.findById(user.getId());
         HashMap<String,Object> res = new HashMap<>();
-        res.put("data",user);
+        res.put("data",userr);
+        System.out.println(userr);
         String users_json = JSON.toJSONString(res);
         return users_json;
     }

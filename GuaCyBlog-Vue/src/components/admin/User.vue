@@ -10,11 +10,19 @@
     <el-card>
       <el-form ref="form" :model="form" label-width="80px">
         <el-form-item label="用户名:">
-          <!--        <el-input v-model="form.name"></el-input>-->
-          <p></p>
+          <el-input v-model="User.username">
+            <i class="el-icon-edit el-input__icon" slot="suffix"></i>
+          </el-input>
         </el-form-item>
+
+        <el-form-item label="密码:">
+          <el-input v-model="User.password">
+            <i class="el-icon-edit el-input__icon" slot="suffix"></i>
+          </el-input>
+        </el-form-item>
+
         <el-form-item label="个人简介">
-          <el-input type="textarea" v-model="form.desc"></el-input>
+          <el-input type="textarea" v-model="User."></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">提交修改</el-button>
@@ -31,6 +39,7 @@ export default {
       user:{
         id:window.sessionStorage.getItem("userId")
       },
+      User:[],
       form: {
         name: '',
         region: '',
@@ -44,16 +53,23 @@ export default {
     }
   },
   created() {
-    this.getUser(id)
+    this.getUser()
   },
   methods: {
     onSubmit() {
       console.log('submit!');
     },
-    async getUser(id) {
+    async getUser() {
         this.$message_success(this.user.id);
-        const{data:res} = await this.$http.post("user")
+        const{data:res} = await this.$http.post("user/findById",this.user);
+        this.User = res.data;
     }
   }
 }
 </script>
+
+<style>
+.el-form-item{
+  font-weight: ;
+}
+</style>

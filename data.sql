@@ -57,3 +57,18 @@ CREATE TABLE `b_info` (
   `isRead` decimal(1,0) NOT NULL COMMENT '已读符号',
   PRIMARY KEY (`infoId`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=GBK;
+
+
+use lcy;
+drop TABLE if exists `b_userinfo`;
+CREATE TABLE `b_userinfo` (
+  `id` int(11) NOT NULL,
+  `followerNum` int(11),
+  `followingNum` int(11),
+  `articleNum` int(11),
+  `intro` VARCHAR(256),
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=GBK;
+
+insert into `b_userinfo` VALUES(1,0,1,2,"天天开心");
+insert into `b_userinfo` VALUES(2,3,4,3,"好好学习");
