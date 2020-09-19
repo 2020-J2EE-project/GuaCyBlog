@@ -60,4 +60,8 @@ public class UserServiceImpl implements UserService {
         }
         return followers;
     }
+    @Override
+    public User findById(int id) {
+        return userMapper.findById(id);
+    }
 }

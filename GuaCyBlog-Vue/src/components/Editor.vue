@@ -32,7 +32,7 @@ export default {
     data() {
         return {
            editorForm:{
-            userId : '1',
+            userId : window.sessionStorage.getItem("userId"),
             articleTitle:'文章标题',
             tag:'',
             articleText: '',

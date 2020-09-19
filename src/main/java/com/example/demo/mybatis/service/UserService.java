@@ -11,4 +11,5 @@ public interface UserService {
     List<User> findFollowers(int id);
     List<User> findFollowings(int id);
     void addUser(User user);
+    User findById(int id);
 }

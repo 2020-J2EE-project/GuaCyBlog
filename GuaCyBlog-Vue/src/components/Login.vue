@@ -59,10 +59,11 @@ export default {
         const {data :res} = await this.$http.post("user/login", this.loginForm);
         if (res == "success" ) {
           window.sessionStorage.setItem('flag','ok'); // session 放置
-          //this.$message.success("登陆成功！！！");
+          this.$message_success("登陆成功！！！");
+          window.sessionStorage.setItem('userId',res.userid);
           this.$router.push({ path: "/page"});
         }else{
-          this.$message.error(res);
+          this.$message_error(res);
         }
       });
     },

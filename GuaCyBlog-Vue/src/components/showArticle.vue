@@ -7,7 +7,7 @@
         <el-breadcrumb-item :to="{ path: '/article' }">文章列表</el-breadcrumb-item>
         <el-breadcrumb-item :to="{ path: '/show' }">{{article.articleTitle}}</el-breadcrumb-item>
       </el-breadcrumb>
-      
+
       <mavon-editor
           class="md"
           :value="article.articleText"
@@ -29,7 +29,7 @@ export default{
   //props:['articleText'],
   // articleText : '# 你好',
   created() {
-    //this.$message.success("登陆成功！！！");
+    //this.$message_success("登陆成功！！！");
   },
   data(){
     return{

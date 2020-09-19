@@ -22,7 +22,12 @@ axios.interceptors.request.use(config => {
   return config;
 })
 Vue.config.productionTip = false
-
+Vue.prototype.$message_success = function (msg) {
+  this.$message.success({message: msg,duration:1000})
+}
+Vue.prototype.$message_error = function (msg) {
+  this.$message.error({message: msg,duration:1000})
+}
 new Vue({
   router,
   render: h => h(App)
