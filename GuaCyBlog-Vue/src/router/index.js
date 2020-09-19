@@ -16,8 +16,8 @@ import Register from '../components/register.vue'
 import 'mavon-editor/dist/css/index.css'
 import Show from '../components/showArticle.vue'
 import mavonEditor from 'mavon-editor'
-Vue.use(mavonEditor)
 
+Vue.use(mavonEditor)
 Vue.use(VueRouter)
 
 const routes = [

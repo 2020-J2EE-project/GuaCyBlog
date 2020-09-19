@@ -2,6 +2,7 @@ package com.example.demo.mybatis.controller;
 
 import com.alibaba.fastjson.JSON;
 import com.example.demo.mybatis.entity.Article;
+import com.example.demo.mybatis.entity.Tag;
 import com.example.demo.mybatis.service.ArticleService;
 import com.example.demo.mybatis.service.TagService;
 import com.example.demo.mybatis.service.UserService;
@@ -62,6 +63,12 @@ public class ArticleController {
         String text=article.getArticleText();
         System.out.println(userId+"  "+title+"  "+text);
         articleService.addText(article);
+        String tag=article.getTag();
+        if(!tagService.findTag(tag)){
+            Tag newtag = new Tag();
+            newtag.setTagName(tag);
+            tagService.addTag(newtag);
+        }
         return "successful add!";
     }
 
