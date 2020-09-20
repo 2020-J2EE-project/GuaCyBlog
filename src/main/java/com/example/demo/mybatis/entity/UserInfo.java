@@ -1,11 +1,16 @@
 package com.example.demo.mybatis.entity;
 
+import com.alibaba.fastjson.JSON;
 import com.example.demo.mybatis.mapper.UserInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+
+@RestController
 @RequestMapping("/userInfo")
 public class UserInfo {
     int id;
@@ -57,6 +62,10 @@ public class UserInfo {
     @RequestMapping("/getById")
     public String getById(@RequestBody User user){
         UserInfo userInfo = userInfoMapper.getById(user.getId());
-
+        HashMap<String,Object> res = new HashMap<>();
+        res.put("data",userInfo);
+        System.out.println(userInfo);
+        String users_json = JSON.toJSONString(res);
+        return users_json;
     }
 }

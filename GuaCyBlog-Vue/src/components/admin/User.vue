@@ -20,9 +20,8 @@
             <i class="el-icon-edit el-input__icon" slot="suffix"></i>
           </el-input>
         </el-form-item>
-
         <el-form-item label="个人简介">
-          <el-input type="textarea" v-model="User."></el-input>
+          <el-input type="textarea" v-model="UserInfo.intro"></el-input>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" @click="onSubmit">提交修改</el-button>
@@ -40,6 +39,7 @@ export default {
         id:window.sessionStorage.getItem("userId")
       },
       User:[],
+      UserInfo:[],
       form: {
         name: '',
         region: '',
@@ -62,7 +62,9 @@ export default {
     async getUser() {
         this.$message_success(this.user.id);
         const{data:res} = await this.$http.post("user/findById",this.user);
+        const{cap:res2} = await this.$http.post("userInfo/getById",this.user);
         this.User = res.data;
+        this.UserInfo = res2.data;
     }
   }
 }

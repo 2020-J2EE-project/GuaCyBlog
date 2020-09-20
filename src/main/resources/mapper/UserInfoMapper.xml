@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.demo.mybatis.mapper.UserInfoMapper">
-    <select id=""
+    <select id="getById" parameterType="int" resultType="com.example.demo.mybatis.entity.UserInfo">
+        SELECT * FROM b_userinfo WHERE id={id}
+    </select>
 </mapper>
 
 
