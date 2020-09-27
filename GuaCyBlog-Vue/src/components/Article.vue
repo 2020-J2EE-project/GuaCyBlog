@@ -1,38 +1,54 @@
 <template>
-  <el-container>
-    <el-container>
-      <!--侧边栏-->
-      <!--文章主题-->
-      <el-main>
-        <el-breadcrumb separator-class="el-icon-arrow-right">
-          <el-breadcrumb-item :to="{ path: '/home' }">首页</el-breadcrumb-item>
-          <el-breadcrumb-item :to="{ path: '/article' }">文章列表</el-breadcrumb-item>
-        </el-breadcrumb>
-        <el-table :data="articleList" border stripe>
-          <el-table-column type="index"></el-table-column>
-          <el-table-column label="标题"
-                           prop="articleTitle">
-            <template slot-scope="scope">
-              <el-button
-                  type="text"
-                  size="small"
-                  prop="articleTitle"
-                  @click="show(scope.row)">
-                <p>{{scope.row.articleTitle}}</p>
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </el-main>
-    </el-container>
-  </el-container>
+  <div>
+    <!--无文章-->
+    <div v-if="articleList.length==0">
+      <el-card class="article-card">
+        <div align="middle">
+          <h2>暂无文章</h2>
+        </div>
+        <div align="middle" v-if="userId==user.id">
+          <el-button type="text" @click="goto('/editor')">新建文章</el-button>
+        </div>
+      </el-card>
+    </div>
+    <!--有文章-->
+    <div v-for="article in articleList" :key="article.articleTitle">
+      <el-card class="article-card">
+        <div slot="header" align="left">
+          <el-button
+              type="text"
+              size="small" @click="show(article)">
+            {{article.articleTitle}}
+          </el-button>
+          <el-button
+              type="text"
+              size="small" @click="deleteText(article)">
+            <i class="el-icon-delete" float="right"></i></el-button>
+        </div>
+        <div style="font-size:10px;" align="left">
+          {{article.articleInfo}}
+        </div>
+      </el-card>
+    </div>
+  </div>
 </template>
 <script>
 export default {
+  watch: {
+    $route(to, from) {
+      this.articleList = this.$route.query.articleList;
+    },
+  },
   data() {
     return{
       articleList:[],
-      total: 0
+      commentList:[],
+      commentImg:[],
+      total: 0,
+      userId:window.sessionStorage.getItem("visitingId"),
+      user:{
+        id:window.sessionStorage.getItem("visitingId")
+      }
     }
   },
   created() {
@@ -40,45 +56,32 @@ export default {
   },
   methods:{
     async getArticleList() {
-      // 调用post请求
-      const {data: res} = await this.$http.get("article/findAllArticle");
-      this.articleList = res.data; // 将返回数据赋值
-      this.total = res.numbers; // 总个数
+      const {data: res} = await this.$http.post("article/findArticleById",this.user);
+      this.articleList = res.data;
+      await this.$router.push({path: '/welcome', query: {articleList: this.articleList}});
+
     },
-    show(x) {
-      this.$router.push({path:'/show',query:{article:x}})
+    async show(x) {
+       window.sessionStorage.setItem("visitingPage","Article");
+       window.sessionStorage.setItem("articleId",x.articleId);
+       this.$router.push({path:'/show'});
+       // await this.$router.push({path: '/show', query: {article: x, commentList: this.commentList,commentImg:this.commentImg}})
+    },
+    async deleteText(x) {
+      this.$confirm('确认删除文章?', {
+        confirmButtonClass: '确定',
+        cancelButtonText: '取消',
+      }).then(()=>{
+        const {data:res}=this.$http.post("article/delete",x);
+        this.getArticleList();
+      }).catch(()=>{
+      });
+    },
+    goto(x) {
+      this.$router.push({path:x});
     }
   }
 }
 </script>
-
 <style>
-.el-header, .el-footer {
-  background-color: #B3C0D1;
-  color: #333;
-  text-align: center;
-  line-height: 60px;
-}
-.el-aside {
-  background-color: #D3DCE6;
-  color: #333;
-  text-align: center;
-  line-height: 200px;
-}
-.el-main {
-  background-color: #E9EEF3;
-  color: #333;
-  text-align: center;
-  line-height: 160px;
-}
-body > .el-container {
-  margin-bottom: 40px;
-}
-.el-container:nth-child(5) .el-aside,
-.el-container:nth-child(6) .el-aside {
-  line-height: 260px;
-}
-.el-container:nth-child(7) .el-aside {
-  line-height: 320px;
-}
 </style>

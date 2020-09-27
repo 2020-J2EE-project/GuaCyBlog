@@ -1,6 +1,7 @@
 package com.example.demo.mybatis.entity;
 
 import com.alibaba.fastjson.JSON;
+import com.example.demo.mybatis.mapper.ArticleMapper;
 import com.example.demo.mybatis.mapper.UserInfoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -58,13 +59,19 @@ public class UserInfo {
     @Autowired
     private UserInfoMapper userInfoMapper;
 
+    @Autowired
+    private ArticleMapper articleMapper;
+
     @CrossOrigin
     @RequestMapping("/getById")
     public String getById(@RequestBody User user){
-        UserInfo userInfo = userInfoMapper.getById(user.getId());
+        //UserInfo userInfo = userInfoMapper.getById(user.getId());
+        int articleNum1 = articleMapper.cntArticle(user.getId());
+        UserInfo userInfo = new UserInfo();
+        userInfo.articleNum = articleNum1;
         HashMap<String,Object> res = new HashMap<>();
         res.put("data",userInfo);
-        System.out.println(userInfo);
+        System.out.println("userInfo:"+userInfo);
         String users_json = JSON.toJSONString(res);
         return users_json;
     }

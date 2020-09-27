@@ -9,4 +9,5 @@ import java.util.List;
 public interface InfoMapper {
   void addInfo(Info info);
   List<Info> findInfoById(int receiveUserId);
+  void deleteInfoById(int infoId);
 }

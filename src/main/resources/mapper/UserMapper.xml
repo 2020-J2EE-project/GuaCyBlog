@@ -4,32 +4,50 @@
     <select id="findAll" resultType="User">
         SELECT * FROM b_user
     </select>
-
     <select id="findByUsername" parameterType="String" resultType="User">
         SELECT * FROM b_user WHERE username = #{username}
     </select>
-
     <select id="findById" parameterType="int" resultType="User">
         SELECT * FROM b_user WHERE id = #{id}
     </select>
-
     <select id="findFollowers" parameterType="int" resultType="int">
         SELECT followerId FROM b_follow WHERE followingId = #{followingId}
     </select>
-
     <select id="findFollowings" parameterType="int" resultType="int">
         SELECT followingId FROM b_follow WHERE followerId = #{followerId}
     </select>
     <select id="findUserById" resultType="com.example.demo.mybatis.entity.User">
         SELECT * FROM b_user WHERE id
     </select>
-
     <insert id="addUser" parameterType="User">
-        INSERT INTO b_user VALUES(NULL,#{username},#{password})
+        INSERT INTO b_user VALUES(NULL,#{username},#{password},#{userimg},#{intro},0,0,0)
     </insert>
+    <update id="updateById" parameterType="User">
+        update b_user set username = #{username} , password = #{password} , intro = #{intro} where id=#{id}
+    </update>
+    <insert id="addFollow" parameterType="com.example.demo.mybatis.entity.Follow" >
+        insert into b_follow values(null,#{followingId},#{followerId})
+    </insert>
+    <delete id="removeFollow" parameterType="com.example.demo.mybatis.entity.Follow" >
+        delete from b_follow where followingId=#{followingId} and followerId=#{followerId}
+    </delete>
+
+
+
+
+    <select id="updateArticleNum" parameterType="com.example.demo.mybatis.entity.User">
+    update b_user set articleNum= #{articleNum}  WHERE id=#{id}
+    </select>
+
+    <select id="updateFollowerNum" parameterType="com.example.demo.mybatis.entity.User">
+    update b_user set followerNum= #{followerNum}  WHERE id=#{id}
+    </select>
+
+    <select id="updateFollowingNum" parameterType="com.example.demo.mybatis.entity.User">
+    update b_user set followingNum= #{followingNum}  WHERE id=#{id}
+    </select>
 
 </mapper>
-
 
 <!-- UserMapper.xml 名称必须和@Mapper 接口一致 -->
 <!-- namespace中需要与使用@Mapper的接口对应 -->

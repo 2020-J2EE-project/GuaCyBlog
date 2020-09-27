@@ -1,13 +1,22 @@
 package com.example.demo.mybatis.entity;
 
-import java.util.Date;
-
 public class Comment {
     private int commentId;
     private int reviewerId;
     private int articleId;
-    private Date commentTime;
+    private String commentTime;
     private String commentText;
+    private String reviewerName;
+
+    public String getReviewerName() {
+        return reviewerName;
+    }
+
+    public void setReviewerName(String reviewerName) {
+        this.reviewerName = reviewerName;
+    }
+
+
 
     public int getCommentId() {
         return commentId;
@@ -33,11 +42,11 @@ public class Comment {
         this.articleId = articleId;
     }
 
-    public Date getCommentTime() {
+    public String getCommentTime() {
         return commentTime;
     }
 
-    public void setCommentTime(Date commentTime) {
+    public void setCommentTime(String commentTime) {
         this.commentTime = commentTime;
     }
 

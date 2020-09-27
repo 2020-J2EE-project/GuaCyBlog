@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.example.demo.mybatis.mapper.TagMapper">
-       <select id="findAllTags" resultType="com.example.demo.mybatis.entity.Tag">
-             Select * from b_tag
+       <select id="findAllTags"  parameterType="int" resultType="com.example.demo.mybatis.entity.Tag">
+             Select * from b_connect where userId=#{id}
        </select>
 
     <select id="findTag" parameterType="String" resultType="com.example.demo.mybatis.entity.Tag">
@@ -12,4 +12,12 @@
     <select id="addTag" parameterType="com.example.demo.mybatis.entity.Tag">
              INSERT b_tag VALUES(null,#{tagName})
        </select>
+
+    <select id="addConnect" parameterType="com.example.demo.mybatis.entity.Connect">
+             INSERT b_connect VALUES(null,#{userId},#{articleId},#{tagName})
+       </select>
+
+    <delete id="deleteConnect" parameterType="com.example.demo.mybatis.entity.Connect">
+        delete from b_connect where articleId=#{articleId}
+    </delete>
 </mapper>

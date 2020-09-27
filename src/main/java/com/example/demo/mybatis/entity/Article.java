@@ -8,20 +8,32 @@ public class Article {
     private String articleTitle;
     private int userId;
     private String articleText;
-    private String tag;
+    private String articleInfo;
+
+    public String getArticleInfo() {
+        return articleInfo;
+    }
+
+    public void setArticleInfo(String articleInfo) {
+        this.articleInfo = articleInfo;
+    }
+
+
+    public String[] getTags() {
+        return tags;
+    }
+
+    public void setTags(String[] tags) {
+        this.tags = tags;
+    }
+
+    private String[] tags;
 
     public String getArticleText() {
         return articleText;
     }
     public void setArticleText(String articleText) {
         this.articleText = articleText;
-    }
-
-    public String getTag() {
-        return tag;
-    }
-    public void setTag(String tag) {
-        this.tag = tag;
     }
 
     public int getArticleId() {
@@ -44,6 +56,7 @@ public class Article {
     public void setUserId(int userId) {
         this.userId = userId;
     }
+
 
 }
 

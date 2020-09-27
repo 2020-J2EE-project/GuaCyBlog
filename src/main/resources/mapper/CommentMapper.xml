@@ -7,6 +7,6 @@
 
 
     <insert id="addComment" parameterType="com.example.demo.mybatis.entity.Comment">
-             INSERT b_comment VALUES(null,#{reviewerId},#{articleId},#{commentTime}，#{commentText});
+             INSERT b_comment VALUES(null,#{reviewerId},#{articleId},#{commentTime},#{commentText})
        </insert>
 </mapper>

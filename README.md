@@ -15,7 +15,11 @@ cnpm install axios (安装 axios，用于网络请求)
 cnpm install vuex --save(安装 Vuex，用于管理状态)
 cnpm install vue-router (安装 路由，用于实现两个 Vue 页面的跳转)
 ```
-
+样式表要下载的东西
+```
+npm install stylus -D
+npm install stylus-loader css-loader style-loader --save-dev
+```
 ### Git
 ```
 $ git add .

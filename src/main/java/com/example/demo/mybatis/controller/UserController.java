@@ -1,17 +1,18 @@
 package com.example.demo.mybatis.controller;
 
 import com.alibaba.fastjson.JSON;
+import com.example.demo.mybatis.entity.Follow;
+import com.example.demo.mybatis.entity.Info;
 import com.example.demo.mybatis.entity.User;
+import com.example.demo.mybatis.service.InfoService;
 import com.example.demo.mybatis.service.UserService;
+import com.example.demo.mybatis.util.FileUploadUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 
@@ -24,12 +25,12 @@ public class UserController {
     private UserService userService;
 
     @RequestMapping("/users")         //列出所有的user
-    public ModelAndView users() {
+    public String users() {
         List<User> users = userService.findAll();
-        ModelAndView mv = new ModelAndView();
-        mv.addObject("users",users);
-        mv.setViewName("users");
-        return mv;
+        HashMap<String,Object> data = new HashMap<>();
+        data.put("userlist",users);
+        String users_json=JSON.toJSONString(data);
+        return users_json;
     }
 
     @CrossOrigin
@@ -39,6 +40,7 @@ public class UserController {
         String message;
         String username=user.getUsername();
         String password=user.getPassword();
+        String userimg = user.getUserimg();
         System.out.println("User:"+user);
         User user1 = userService.findByUsername(username);
         System.out.println("User1:"+user1);
@@ -50,6 +52,7 @@ public class UserController {
             data.put("userid",user1.getId());
             System.out.println(user1.getId());
             data.put("username",user1.getUsername());
+            data.put("userimg",userimg);
             message="success";
         }
         data.put("msg",message);
@@ -69,26 +72,27 @@ public class UserController {
         return msg;
     }
 
+    @CrossOrigin
     @RequestMapping("/follower")
-    public ModelAndView follower(HttpServletRequest request, HttpSession session){
-        ModelAndView mv=new ModelAndView();
-        String username=request.getParameter("username");
-        User user = userService.findByUsername(username);
-        List<User> followers=userService.findFollowers(user.getId());
-        mv.addObject("followers",followers);
-        mv.setViewName("users");
-        return mv;
-    }
+    public String follower(@RequestBody User user){
 
+
+        HashMap<String,Object> data = new HashMap<>();
+        List<User> followers=userService.findFollowers(user.getId());
+        data.put("followers",followers);
+        String follower_json= JSON.toJSONString(data);
+        return follower_json;
+    }
+    @CrossOrigin
     @RequestMapping("/following")
-    public ModelAndView following(HttpServletRequest request, HttpSession session){
-        ModelAndView mv=new ModelAndView();
-        String username=request.getParameter("username");
-        User user = userService.findByUsername(username);
-        List<User> followings=userService.findFollowers(user.getId());
-        mv.addObject("followings",followings);
-        mv.setViewName("users");
-        return mv;
+    public String following(@RequestBody User user){
+
+
+        HashMap<String,Object> data = new HashMap<>();
+        List<User> followings=userService.findFollowings(user.getId());
+        data.put("followings",followings);
+        String following_json= JSON.toJSONString(data);
+        return following_json;
     }
 
     @CrossOrigin
@@ -100,6 +104,70 @@ public class UserController {
         System.out.println(userr);
         String users_json = JSON.toJSONString(res);
         return users_json;
+    }
+
+    @CrossOrigin
+    @RequestMapping("/updateById")
+    public String updateById(@RequestBody User user) {
+        userService.updateById(user);
+        System.out.println("update:"+user);
+        return "haha";
+    }
+
+    @Autowired
+    private InfoService infoService;
+
+    @CrossOrigin
+    @RequestMapping("/addfollow")
+    public String addfollow(@RequestBody Follow follow){
+        userService.addFollow(follow);
+        System.out.println(JSON.toJSONString(follow));
+        //改变被关注者粉丝数
+        User followingUser=userService.findById(follow.getFollowingId());
+        followingUser.setFollowerNum(followingUser.getFollowerNum()+1);
+        //改变关注者被关注数
+        User followerUser=userService.findById(follow.getFollowerId());
+        followerUser.setFollowingNum(followerUser.getFollowingNum()+1);
+        //更新一下
+        userService.updateFollowerNum(followingUser);
+        userService.updateFollowingNum(followerUser);
+        //发送通知
+        Info info = new Info();
+        info.setPostUserId(follow.getFollowerId());
+        info.setReceiveUserId(follow.getFollowingId());
+        info.setType(1);
+        info.setTime(LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")));
+        infoService.addInfo(info);
+
+        return "ok";
+
+    }
+
+    @CrossOrigin
+    @RequestMapping("/removefollow")
+    public String removefollow(@RequestBody Follow follow){
+        userService.removeFollow(follow);
+        //改变被关注者粉丝数
+        User followingUser=userService.findById(follow.getFollowingId());
+        followingUser.setFollowerNum(followingUser.getFollowerNum()-1);
+        //改变关注者被关注数
+        User followerUser=userService.findById(follow.getFollowerId());
+        followerUser.setFollowingNum(followerUser.getFollowingNum()-1);
+        //更新一下
+        userService.updateFollowerNum(followingUser);
+        userService.updateFollowingNum(followerUser);
+
+        return "ok";
+    }
+
+    @CrossOrigin
+    @RequestMapping("/upload")
+    public String upload(@RequestParam("file") MultipartFile multipartFile) {
+        // replaceAll 用来替换windows中的\\ 为 /
+        System.out.println("访问");
+        String s= FileUploadUtil.upload(multipartFile).replaceAll("\\\\", "/");
+        System.out.println(s);
+        return s;
     }
 }
 

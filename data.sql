@@ -1,30 +1,37 @@
+use lcy;
 DROP TABLE IF EXISTS `b_user`;
 CREATE TABLE `b_user` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
-  `username` int(11) NOT NULL,
+  `username` varchar(200) NOT NULL,
   `password` varchar(200) not null,
+  `intro` varchar(200),
    PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=GBK;
+
+INSERT INTO `b_user` VALUES(NULL,'admin','123456',NULL);
+INSERT INTO `b_user` VALUES(NULL,'lcy','lcy','HAHA');
+INSERT INTO `b_user` VALUES(NULL,'guaguastandup','123456',NULL);
+
 
 DROP TABLE IF EXISTS `b_content`;
 CREATE TABLE `b_content` (
   `articleId` int(11) NOT NULL AUTO_INCREMENT,
-  `userId` int(11) NOT NULL COMMENT '作者id',
-  `articleTitle` varchar(200) not null comment'文章名',
-  `articleText` text comment'文章内容',
-  `tag` varchar(200) not null comment 'tag',
+  `userId` int(11) NOT NULL,
+  `articleTitle` varchar(150) NOT NULL,
+  `articleText` text  character set gb2312 NOT NULL,
+  `articleInfo` varchar(200),
   PRIMARY KEY (`articleId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=GBK;
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=gb2312;
 
-DROP TABLE IF EXISTS `b_comment`;
-CREATE TABLE `b_comment` (
-  `commentId` int(11) NOT NULL AUTO_INCREMENT,
-  `reviewerId` int(11) NOT NULL COMMENT '评论者id',
-  `articleId` int(11) not null comment'文章id',
-  `commentTime` datetime comment'评论时间',
-  `commentText` text not null comment '评论内容',
-  PRIMARY KEY (`commentId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=GBK;
+drop table if exists `b_comment`;
+CREATE TABLE `b_comment`(
+`commentId` INT NOT NULL AUTO_INCREMENT,
+`reviewerId` INT NOT NULL ,
+`articleId` INT NOT NULL,
+`commentTime` VARCHAR(100)  NOT NULL,
+`commentText` VARCHAR(200) NOT NULL,
+PRIMARY KEY(`commentId`) USING BTREE
+);
 
 drop TABLE if exists `b_tag`;
 CREATE TABLE `b_tag` (
@@ -35,6 +42,15 @@ CREATE TABLE `b_tag` (
 INSERT `b_tag` VALUES(null,'tag1');
 INSERT `b_tag` VALUES(null,'tag2');
 INSERT `b_tag` VALUES(null,'tag3');
+
+DROP TABLE IF EXISTS `b_connect`;
+CREATE TABLE `b_connect` (
+  `connectId` int(11) NOT NULL AUTO_INCREMENT,
+  `userId` int(11) NOT NULL,
+  `articleId` int(11) NOT NULL,
+  `tagName` varchar(150) NOT NULL,
+  PRIMARY KEY (`connectId`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=gb2312;
 
 drop TABLE if exists `b_follow`;
 CREATE TABLE `b_follow` (
@@ -47,28 +63,13 @@ INSERT `b_follow` VALUES(null,1,2);
 INSERT `b_follow` VALUES(null,2,1);
 INSERT `b_follow` VALUES(null,1,3);
 
-drop TABLE if exists `b_info`;
-CREATE TABLE `b_info` (
-  `infoId` int(11) NOT NULL AUTO_INCREMENT,
-  `postUserId` int(11) NOT NULL COMMENT '发信人',
-  `receiveUserId` int(11) NOT NULL COMMENT '收信人',
-  `type` int(11) NOT NULL COMMENT '通知类型',
-  `articleId` int(11)  COMMENT '文章Id',
-  `isRead` decimal(1,0) NOT NULL COMMENT '已读符号',
-  PRIMARY KEY (`infoId`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=GBK;
-
-
-use lcy;
-drop TABLE if exists `b_userinfo`;
-CREATE TABLE `b_userinfo` (
-  `id` int(11) NOT NULL,
-  `followerNum` int(11),
-  `followingNum` int(11),
-  `articleNum` int(11),
-  `intro` VARCHAR(256),
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=GBK;
-
-insert into `b_userinfo` VALUES(1,0,1,2,"天天开心");
-insert into `b_userinfo` VALUES(2,3,4,3,"好好学习");
+drop table if exists b_info;
+CREATE TABLE `b_info`(
+`infoId` INT NOT NULL AUTO_INCREMENT,
+`postUserId` INT NOT NULL ,
+`receiveUserId` INT NOT NULL,
+`type` INT  NOT NULL,
+`articleId` INT ,
+`time` VARCHAR(50) NOT NULL,
+PRIMARY KEY(`infoId`) USING BTREE
+);

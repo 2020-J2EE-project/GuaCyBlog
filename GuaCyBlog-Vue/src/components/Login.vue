@@ -10,15 +10,14 @@
           label-width="0px"
       >
         <el-form-item prop="username">
-          <el-input v-model="loginForm.username" prefix-icon="iconfont icondenglu"></el-input>
+          <el-input v-model="loginForm.username" prefix-icon="iconfont icondenglu" clearable></el-input>
         </el-form-item>
         <el-form-item prop="password">
-          <el-input v-model="loginForm.password" prefix-icon="iconfont iconmima" type="password"></el-input>
+          <el-input v-model="loginForm.password" prefix-icon="iconfont iconmima" type="password" clearable></el-input>
         </el-form-item>
         <el-form-item class="btns">
           <el-button type="primary" @click="register">注册</el-button>
           <el-button type="primary" @click="login">登录</el-button>
-          <!--method:resetLoginForm-->
           <el-button type="info" @click="resetLoginForm">重置</el-button>
         </el-form-item>
       </el-form>
@@ -31,17 +30,17 @@ export default {
   data() {
     return {
       loginForm: {
-        username: "admin",
+        username: "guagua",
         password: "123456"
       },
       loginRules: {
         username: [
           { required: true, message: "请输入用户名", trigger: "blur" },
-          { min: 5, max: 20, message: "长度在 5 到 20 个字符", trigger: "blur" }
+          { min: 1, max: 20, message: "长度在 1 到 20 个字符", trigger: "blur" }
         ],
         password: [
           { required: true, message: "请输入密码", trigger: "blur" },
-          { min: 6, max: 8, message: "密码为 6~8 位", trigger: "blur" }
+          { min: 1, max: 8, message: "密码为 1~8 位", trigger: "blur" }
         ]
       }
     };
@@ -59,10 +58,13 @@ export default {
         const {data :res} = await this.$http.post("user/login", this.loginForm);
         if (res.msg == "success" ) {
           window.sessionStorage.setItem('flag','ok'); // session 放置
-          //this.$message_success("登陆成功！！！");
           window.sessionStorage.setItem('userId',res.userid);
-          this.$message_success(res.userid);
-          this.$router.push({ path: "/page"});
+          window.sessionStorage.setItem('visitingId',res.userid);
+          window.sessionStorage.setItem('username',res.username);
+          window.sessionStorage.setItem('userimg',res.userimg);
+          window.sessionStorage.setItem('visitingPage',"articleList");
+          //visitingPage:articleList,showArticle,userSetting,mailBox,following,follower,search
+          await this.$router.push({path: "/welcome"});
         }else{
           this.$message_error(res);
         }

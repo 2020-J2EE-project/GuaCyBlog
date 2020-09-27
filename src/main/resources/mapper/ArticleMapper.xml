@@ -3,7 +3,7 @@
 <mapper namespace="com.example.demo.mybatis.mapper.ArticleMapper">
 <!--    新增文章实体-->
        <select id="addText" parameterType="Article">
-             INSERT b_content VALUES(null,#{userId},#{articleTitle},#{articleText},#{tag})
+             INSERT b_content VALUES(null,#{userId},#{articleTitle},#{articleText},#{articleInfo})
        </select>
 <!--    根据文章ID返回文章实体-->
       <select id="findText" parameterType="int" resultType="Article">
@@ -13,4 +13,30 @@
         <select id="findAllArticle" resultType="Article">
              SELECT * FROM b_content
        </select>
+
+
+    <select id="findArticleById" parameterType="int"  resultType="Article">
+             SELECT * FROM b_content WHERE userId=#{id}
+       </select>
+
+    <select id="findArticleIdByTagAndId" parameterType="com.example.demo.mybatis.entity.Connect"  resultType="int">
+             SELECT articleId FROM b_connect WHERE tagName=#{tagName} and userId=#{userId}
+       </select>
+
+    <select id="findArticleIdByTitle" parameterType="String"  resultType="int">
+             SELECT articleId FROM b_content WHERE articleTitle=#{articleTitle}
+       </select>
+
+    <!--删除文章-->
+    <delete id="deleteText" parameterType="int">
+        delete from b_content where articleId = #{articleId}
+    </delete>
+
+    <select id="cntArticle" parameterType="int" resultType="int">
+        select count(*) from b_content where userid=#{userid}
+    </select>
+
+    <delete id="deleteComment" parameterType="int">
+        delete from b_comment where commentId=#{commentId}
+    </delete>
 </mapper>
